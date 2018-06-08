@@ -97,6 +97,12 @@
   dependencies:
     tslib "^1.9.0"
 
+"@angular/cdk@^6.2.1":
+  version "6.2.1"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-6.2.1.tgz#6ac6e58e8557623e6615ebcb673d74bcc575641c"
+  dependencies:
+    tslib "^1.7.1"
+
 "@angular/cli@~6.0.7":
   version "6.0.8"
   resolved "https://registry.yarnpkg.com/@angular/cli/-/cli-6.0.8.tgz#65070958b944be30053232c51f8449b7ddd4d92a"
