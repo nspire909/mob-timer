@@ -1,8 +1,10 @@
 <mat-toolbar color="primary">
-  Mob Programming Timer
+  <div>Mob Programming Timer</div>
+  <div class="spacer"></div>
+  <span>Dark Theme&nbsp;&nbsp;</span><mat-checkbox [(ngModel)]="isDarkTheme"></mat-checkbox>
 </mat-toolbar>
-<div class="page-content">
-  <form [formGroup]="form" class="formo-group">
+<div class="page-content" [ngClass]="isDarkTheme ? 'dark-theme' : ''">
+  <form [formGroup]="form" class="form-group">
     <mat-form-field class="form-control">
       <label class="center-block">
         <input matInput type="number" formControlName="minutes" size="1">
