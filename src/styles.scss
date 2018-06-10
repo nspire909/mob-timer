@@ -1,6 +1,6 @@
-@import '~@angular/material/prebuilt-themes/pink-bluegrey.css';
+@import './app/app.theme'; //this is the only spot this can be imported!
 
-body { 
+body {
   font-family: Roboto, Arial, sans-serif;
   margin: 0;
 }

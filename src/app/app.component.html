@@ -1,39 +1,48 @@
 <mat-toolbar color="primary">
-  Angular Material 2 App
+  Mob Programming Timer
 </mat-toolbar>
-<form [formGroup]="form">
-  <div class="form-group">
-    <label class="center-block">Duration:
-      <input class="form-control" formControlName="minutes" size="1"> Minutes
-    </label>
+<div class="page-content">
+  <form [formGroup]="form" class="formo-group">
+    <mat-form-field class="form-control">
+      <label class="center-block">
+        <input matInput type="number" formControlName="minutes" size="1">
+      </label>
+    </mat-form-field>
+    Minutes
+  </form>
+
+  <div *ngIf="timer$ | async">
+    <button mat-button (click)=toggleTimer()>
+      <mat-icon>{{(pause$ | async) ? 'play_arrow' : 'pause'}}</mat-icon>
+    </button>
+    <!-- <button mat-button (click)=restart()>Restart</button> -->
+    <button mat-button (click)=next()>
+      <mat-icon>skip_next</mat-icon>
+    </button>
+    <button mat-button (click)=reset()>
+      <mat-icon>replay</mat-icon>
+    </button>
   </div>
-</form>
+  <button mat-button *ngIf="!(timer$ | async)" (click)=startTimer()>
+    <mat-icon>play_arrow</mat-icon>
+  </button>
 
-<div *ngIf="timer$ | async">
-  <p>{{ timer$ | async | date:"mm:ss" }} remaining</p>
-  <button (click)=toggleTimer()>{{(pause$ | async) ? 'Resume' : 'Pause'}}</button>
-  <button (click)=restart()>Restart</button>
-  <button (click)=next()>Next</button>
-  <button (click)=reset()>Reset</button>
-</div>
-<button *ngIf="!(timer$ | async)" (click)=startTimer()>Start</button>
-
-
-<div>
-  <ul>
-    <li 
-      [class.current]="(current$ | async) === person.name" 
+  <ul class="list-of-people">
+    <li
+      [class.currentPerson]="(current$ | async) === person.name"
       *ngFor="let person of people; index as i"
     >
-      {{person.name}}
+      <table>
+        <tr>
+          <td class="name-column">{{person.name}}</td>
+          <td *ngIf="(current$ | async) === person.name">{{ timer$ | async | date:"mm:ss" }}</td>
+          <td *ngIf="((current$ | async) === person.name) && (timer$ | async)">
+            <button mat-button (click)=restart()>Restart</button>
+
+        </tr>
+      </table>
     </li>
   </ul>
-
-  <!-- <div *ngFor="let person of people;">
-    <input type="text" name="somename" [(ngModel)]="person.name"/>
-  </div>
-  <button (click)="addField()">Add Another</button> -->
 </div>
-
 
 
