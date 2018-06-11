@@ -69,7 +69,7 @@ export class AppComponent implements OnInit {
     this.timer$ = merge(this.pause$)
       .pipe(
         switchMap(val => (!val ? interval$ : EMPTY)),
-        scan((acc, curr) => (curr | curr ? curr + acc : acc), seconds),
+        scan((acc, curr) => (curr ? curr + acc : acc), seconds),
         takeUntil(this.reset$),
         tap(x => x === 31 || x === 30 || x === 29 ? AppComponent.beep() : () => { }),
         tap(x => x === 3 ? AppComponent.gameOver() : () => { }),
