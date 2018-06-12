@@ -1,0 +1,21 @@
+<form #form="ngForm">
+  <mat-form-field class="form-control">
+    <input matInput type="number" required [(ngModel)]="minutes" name="minutes" size="1">
+  </mat-form-field>
+  <label for="minutes">
+    Minutes
+  </label>
+</form>
+<div *ngIf="timer$ | async">
+  <button mat-button (click)=toggle()>
+    <mat-icon>{{(pause$ | async) ? 'play_arrow' : 'pause'}}</mat-icon>
+  </button>
+  <ng-content></ng-content>
+  <button mat-button (click)=stop()>
+    <mat-icon>stop</mat-icon>
+  </button>
+  {{ (timer$ | async) * 1000 | date:"mm:ss" }}
+</div>
+<button mat-button *ngIf="!(timer$ | async)" (click)=start()>
+  <mat-icon>play_arrow</mat-icon>
+</button>

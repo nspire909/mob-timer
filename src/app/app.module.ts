@@ -52,7 +52,9 @@ import {
   MatTooltipModule,
   MatTreeModule,
 } from '@angular/material';
+import { TimerModule } from '@devrec/ng-timer';
 import {AppComponent} from './app.component';
+import { TimerComponent } from './timer/timer.component';
 
 /**
  * NgModule that includes all Material modules that are required to serve the app.
@@ -108,8 +110,11 @@ import {AppComponent} from './app.component';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+
+    TimerModule,
   ],
-  imports: [BrowserAnimationsModule]
+  imports: [BrowserAnimationsModule],
+  declarations: []
 })
 export class MaterialModule {}
 
@@ -122,7 +127,7 @@ export class MaterialModule {}
     ReactiveFormsModule,
     BrowserAnimationsModule
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, TimerComponent],
   bootstrap: [AppComponent],
   providers: []
 })

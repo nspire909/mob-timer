@@ -147,6 +147,12 @@
   dependencies:
     tslib "^1.9.0"
 
+"@angular/flex-layout@^6.0.0-beta.16":
+  version "6.0.0-beta.16"
+  resolved "https://registry.yarnpkg.com/@angular/flex-layout/-/flex-layout-6.0.0-beta.16.tgz#e2749c2609743ff4655b09ae8873709c7a62aeae"
+  dependencies:
+    tslib "^1.7.1"
+
 "@angular/forms@^6.0.3":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-6.0.4.tgz#abc5ea355b5261c49f111366f41a812aa9d3d1d3"
@@ -184,6 +190,12 @@
 "@angular/router@^6.0.3":
   version "6.0.4"
   resolved "https://registry.yarnpkg.com/@angular/router/-/router-6.0.4.tgz#81c96dfa42a8c4a218cbd450b1e8959a76ea9595"
+  dependencies:
+    tslib "^1.9.0"
+
+"@devrec/ng-timer@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@devrec/ng-timer/-/ng-timer-0.0.2.tgz#511b8c2d9e4cffa20c9a25f285803dbf72796ddf"
   dependencies:
     tslib "^1.9.0"
 

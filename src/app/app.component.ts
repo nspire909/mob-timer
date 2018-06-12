@@ -1,10 +1,13 @@
-import {
-  Component, ElementRef, OnInit
-} from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {interval, merge, Observable, BehaviorSubject, Subject, NEVER, EMPTY} from 'rxjs';
+import { interval, merge, Observable, BehaviorSubject, Subject, NEVER, EMPTY } from 'rxjs';
 import { switchMap, scan, takeWhile, startWith, tap, map, takeUntil } from 'rxjs/operators';
-import {sound} from '../assets/sounds';
+import { AudioService } from 'src/app/shared/audio.service';
+
+export interface Person {
+  name: string;
+}
+
 
 @Component({
   selector: 'mob-app-component',
@@ -28,30 +31,18 @@ export class AppComponent implements OnInit {
 
   timer$: Observable<number>;
   pause$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  reset$: Subject<number> = new Subject();
-  current$: Observable<string>;
+  reset$: Subject<void> = new Subject();
+  current$: Subject<Person> = new BehaviorSubject(this.people[0]);
 
-  constructor(private fb: FormBuilder) { }
+  // @ViewChild('mob-timer')
+  // ngTimer$: Observable<number>;
 
-  static beep() {
-    const snd = new Audio(`data:audio/wav;base64,${sound.beep}`);
-    snd.play();
-  }
-
-  static gameOver() {
-    const snd = new Audio(`data:audio/wav;base64,${sound.gameOver}`);
-    snd.play();
-  }
+  constructor(private fb: FormBuilder, private audio: AudioService) { }
 
   ngOnInit() {
     this.form = this.fb.group({
       minutes: [15, Validators.required]
     });
-
-    this.current$ = this.reset$.pipe(
-      startWith(0),
-      map(i => this.people[(i + 0) % this.people.length].name)
-    );
   }
 
   addField() {
@@ -66,17 +57,31 @@ export class AppComponent implements OnInit {
 
     const seconds = 60 * +this.form.get('minutes').value;
 
+    this.pause$.next(false);
+
     this.timer$ = merge(this.pause$)
       .pipe(
         switchMap(val => (!val ? interval$ : EMPTY)),
         scan((acc, curr) => (curr ? curr + acc : acc), seconds),
         takeUntil(this.reset$),
-        tap(x => x === 31 || x === 30 || x === 29 ? AppComponent.beep() : () => { }),
-        tap(x => x === 3 ? AppComponent.gameOver() : () => { }),
+        tap(x => x === 31 || x === 30 || x === 29 ? this.audio.beep() : () => { }),
+        tap(x => x === 2 ? this.audio.gameOver() : () => { }),
         tap(x => x === 0 ? this.next() : () => { }),
         map(x => x * 1000),
         takeWhile(v => v >= 0)
       );
+
+    // this.ngTimer$.pipe(
+    //   tap(x => x === 31 || x === 30 || x === 29 ? this.audio.beep() : () => { }),
+    //   tap(x => x === 3 ? this.audio.gameOver() : () => { }),
+    //   tap(x => x === 0 ? this.next() : () => { }),
+    //   map(x => x * 1000)
+    // );
+  }
+
+  stopTimer() {
+    this.timer$ = NEVER;
+    // this.ngTimer$ = NEVER;
   }
 
   toggleTimer() {
@@ -84,27 +89,23 @@ export class AppComponent implements OnInit {
   }
 
   restart() {
-    this.reset$.next(this.i);
-    this.pause$.next(false);
-    this.timer$ = NEVER;
+    this.reset$.next();
+    this.current$.next(this.people[this.i % this.people.length]);
     this.startTimer();
   }
 
   next() {
-    this.reset$.next(++this.i);
-    this.pause$.next(false);
-    this.timer$ = NEVER;
+    this.reset$.next();
+    this.current$.next(this.people[++this.i % this.people.length]);
     this.startTimer();
   }
 
   reset() {
     this.i = 0;
-    this.reset$.next(0);
-    this.pause$.next(false);
-    this.timer$ = NEVER;
-
+    this.reset$.next();
+    this.current$.next(this.people[this.i % this.people.length]);
+    this.stopTimer();
   }
-
 
   // whoIsNext() {
   //   let next: string;

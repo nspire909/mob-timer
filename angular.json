@@ -7,8 +7,12 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
-      "prefix": "app",
-      "schematics": {},
+      "prefix": "mob",
+      "schematics": {
+        "@schematics/angular:component": {
+          "styleext": "scss"
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -25,7 +29,8 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "extractCss": true
           },
           "configurations": {
             "production": {
@@ -37,8 +42,6 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -50,11 +53,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "mob-timer:build"
+            "browserTarget": "mob-timer:build",
+            "port": 4301,
+            "open": true
           },
           "configurations": {
             "production": {
-              "browserTarget": "mob-timer:build:production"
+              "browserTarget": "mob-timer:build:production",
+              "port": 4302
             }
           }
         },

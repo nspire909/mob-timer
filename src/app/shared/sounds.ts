@@ -1,4 +1,4 @@
-export const sound = {
+export const sounds = {
   gameOver: `UklGRoqUAwBXQVZFZm10IBAAAAABAAIARKwAABCxAgAEABAAZGF0YTiUAwABAAEA/v///wIAAQD/
 /////v///////v/+//3//v8CAP7/+P/9/wQA/f/3//b/+f/1//P/+P/5//v//P/2//b//P/6/wUA
 BwAVABIA9P/2//D/8f8CAAAADgAPABMAEwD5//f/6P/r/+n/5//n/+f//P////7/+f/b/+D/DwAL
