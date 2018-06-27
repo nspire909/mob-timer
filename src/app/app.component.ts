@@ -16,14 +16,14 @@ export class AppComponent implements OnInit {
 
   i = 0;
   people = [
-    {name: 'Jeremy'},
-    {name: 'Damian'},
-    {name: 'Brian'},
-    {name: 'Guy'},
-    {name: 'Nick'},
-    {name: 'James'},
-    {name: 'Harry'},
-    {name: 'Mike'}
+    {name: 'Amy'},
+    {name: 'Bill'},
+    {name: 'Charlene'},
+    {name: 'Deepak'},
+    {name: 'Emily'},
+    {name: 'Frank'},
+    {name: 'Genevieve'},
+    {name: 'Harry'}
   ];
 
   timer$: Observable<number>;
@@ -58,11 +58,16 @@ export class AppComponent implements OnInit {
     this.people.push({name: ''});
   }
 
-  startTimer() {
+  startTimer(i: number) {
     const interval$ = interval(1000).pipe(
       startWith(0),
       map(() => -1)
     );
+
+    this.reset$.next(this.i = i);
+    this.pause$.next(false);
+
+
 
     const seconds = 60 * +this.form.get('minutes').value;
 
@@ -102,7 +107,9 @@ export class AppComponent implements OnInit {
     this.reset$.next(0);
     this.pause$.next(false);
     this.timer$ = NEVER;
-
+  }
+  deletePerson() {
+    return;
   }
 
 
@@ -122,4 +129,7 @@ export class AppComponent implements OnInit {
   //   while (this.people.length > 0);
   //   this.people = shuffledPeople;
   // }
+  addPerson() {
+    return;
+  }
 }
