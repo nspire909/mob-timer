@@ -1,17 +1,28 @@
 .page-content {
   padding: 2rem;
+  width: 375px;
+}
+
+.head {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  .theme {
+    text-align: right;
+  }
 }
 
 li {
   display: grid;
-  width: 375px;
+  width: 100%;
   align-items: center;
   padding-left: .25rem;
   margin-bottom: .25rem;
   :last-child {
     align-self: right
   }
-  grid-template-columns: 125px 1fr 2fr 2fr 1fr;
+  grid-template-columns: 110px 1fr 2fr 2fr 1fr;
   grid-template-areas:
     "name play-button timer restart delete";
 
@@ -33,7 +44,7 @@ li {
 }
 
 ul.list-of-people {
-  width: 400px;
+  width: 100%;
   list-style: none;
   padding-left: 0;
 }

@@ -1,33 +1,51 @@
 <mat-toolbar color="primary">
   <div>Mob Programming Timer</div>
-  <div class="spacer"></div>
-  <span>Dark Theme&nbsp;&nbsp;</span><mat-checkbox [(ngModel)]="isDarkTheme"></mat-checkbox>
 </mat-toolbar>
 <div class="page-content" [ngClass]="isDarkTheme ? 'dark-theme' : ''">
-  <form [formGroup]="form" class="form-group">
-    <mat-form-field class="form-control">
-      <label class="center-block">
-        <input matInput type="number" formControlName="minutes" size="1">
-      </label>
-    </mat-form-field>
-    Minutes
-  </form>
+  <section class="head">
+    <form [formGroup]="form" class="form-group">
+      <mat-form-field class="form-control">
+        <label class="center-block">
+          <input matInput type="number" formControlName="minutes" size="1">
+        </label>
+      </mat-form-field>
+      Minutes
+    </form>
+    <div class="theme">
+      <mat-slide-toggle [(ngModel)]="isDarkTheme"> Dark Theme</mat-slide-toggle>
+    </div>
 
+  </section>
   <ul class="list-of-people">
     <li [class.currentPerson]="(current$ | async) === person.name" *ngFor="let person of people; index as i">
       <div class="name">{{person.name}}</div>
       <div class="play-button">
-        <button *ngIf="(current$ | async) === person.name && !(timer$ | async)" mat-icon-button (click)=startTimer(i)><mat-icon>play_arrow</mat-icon></button>
-        <button *ngIf="((current$ | async) !== person.name)" mat-icon-button (click)=startTimer(i)><mat-icon>play_arrow</mat-icon></button>
+        <button *ngIf="(current$ | async) === person.name && !(timer$ | async)" mat-icon-button (click)=startTimer(i)>
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button *ngIf="((current$ | async) !== person.name)" mat-icon-button (click)=startTimer(i)>
+          <mat-icon>play_arrow</mat-icon>
+        </button>
         <button *ngIf="(current$ | async) === person.name && (timer$ | async) && (pause$ | async)" mat-icon-button
-                (click)=toggleTimer()><mat-icon>play_arrow</mat-icon></button>
+                (click)=toggleTimer()>
+          <mat-icon>play_arrow</mat-icon>
+        </button>
         <button *ngIf="(current$ | async) === person.name && (timer$ | async) && !(pause$ | async)" mat-icon-button
-                (click)=toggleTimer()><mat-icon>pause</mat-icon></button>
+                (click)=toggleTimer()>
+          <mat-icon>pause</mat-icon>
+        </button>
       </div>
-      <div class="timer" *ngIf="(current$ | async) === person.name && (timer$ | async)">{{ timer$ | async | date:"mm:ss" }}</div>
+      <div class="timer" *ngIf="(current$ | async) === person.name && (timer$ | async)">{{ timer$ | async | date:"mm:ss"
+        }}
+      </div>
       <div class="restart" *ngIf="((current$ | async) === person.name) && (timer$ | async)">
-            <button mat-button (click)=restart()>Restart</button></div>
-      <div class="delete"><button mat-icon-button (click)=deletePerson()><mat-icon>delete</mat-icon></button></div>
+        <button mat-button (click)=restart()>Restart</button>
+      </div>
+      <div class="delete">
+        <button mat-icon-button (click)=deletePerson(i)>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
     </li>
     <li>
       <button mat-icon-button (click)="addPerson()">

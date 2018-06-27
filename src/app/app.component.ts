@@ -19,11 +19,6 @@ export class AppComponent implements OnInit {
     {name: 'Amy'},
     {name: 'Bill'},
     {name: 'Charlene'},
-    {name: 'Deepak'},
-    {name: 'Emily'},
-    {name: 'Frank'},
-    {name: 'Genevieve'},
-    {name: 'Harry'}
   ];
 
   timer$: Observable<number>;
@@ -92,44 +87,22 @@ export class AppComponent implements OnInit {
     this.reset$.next(this.i);
     this.pause$.next(false);
     this.timer$ = NEVER;
-    this.startTimer();
+    this.startTimer(this.i);
   }
 
   next() {
     this.reset$.next(++this.i);
     this.pause$.next(false);
     this.timer$ = NEVER;
-    this.startTimer();
+    this.startTimer(this.i);
   }
 
-  reset() {
-    this.i = 0;
-    this.reset$.next(0);
-    this.pause$.next(false);
-    this.timer$ = NEVER;
-  }
-  deletePerson() {
-    return;
+  deletePerson(i: number) {
+    this.people.splice(i, 1);
   }
 
-
-  // whoIsNext() {
-  //   let next: string;
-  //   const rand = Math.floor(Math.random() * this.people.length);
-  //   next = this.people[rand];
-  //   this.people.splice(rand, 1);
-  //   return next;
-  // }
-
-  // shuffleArray() {
-  //   let shuffledPeople: string[] = [];
-  //   do {
-  //     shuffledPeople.push(this.whoIsNext());
-  //   }
-  //   while (this.people.length > 0);
-  //   this.people = shuffledPeople;
-  // }
   addPerson() {
-    return;
+    const newPerson = window.prompt('Name');
+    this.people.push({name: newPerson});
   }
 }
