@@ -3,24 +3,49 @@
 }
 
 li {
+  display: grid;
+  width: 375px;
+  align-items: center;
+  padding-left: .25rem;
   margin-bottom: .25rem;
+  :last-child {
+    align-self: right
+  }
+  grid-template-columns: 125px 1fr 2fr 2fr 1fr;
+  grid-template-areas:
+    "name play-button timer restart delete";
+
+  .name {
+    grid-area: name;
+  }
+  .play-button {
+    grid-area: play-button;
+  }
+  .timer {
+    grid-area: timer;
+  }
+  .restart {
+    grid-area: restart;
+  }
+  .delete {
+    grid-area: delete;
+  }
 }
+
 ul.list-of-people {
   width: 400px;
   list-style: none;
   padding-left: 0;
-
-  .name-column {
-    width: 8rem;
-    height: 2.5rem;
-  }
 }
+
 .form-control {
   width: 50px;
 }
+
 input {
   text-align: center;
 }
+
 .spacer {
   flex: 1 1 auto;
 }

@@ -13,50 +13,47 @@
     Minutes
   </form>
 
-<!--
-  <div *ngIf="timer$ | async">
-    <button mat-button (click)=toggleTimer()>
-      <mat-icon>{{(pause$ | async) ? 'play_arrow' : 'pause'}}</mat-icon>
-    </button>
-    &lt;!&ndash; <button mat-button (click)=restart()>Restart</button> &ndash;&gt;
-    <button mat-button (click)=next()>
-      <mat-icon>skip_next</mat-icon>
-    </button>
-    <button mat-button (click)=reset()>
-      <mat-icon>replay</mat-icon>
-    </button>
-  </div>
--->
-
   <ul class="list-of-people">
-    <li
-      [class.currentPerson]="(current$ | async) === person.name"
-      *ngFor="let person of people; index as i"
-    >
-      <table>
-        <tr>
-          <td class="name-column">{{person.name}}</td>
-          <td>
-            <button *ngIf="(current$ | async) === person.name && !(timer$ | async)" mat-icon-button (click)=startTimer(i)><mat-icon>play_arrow</mat-icon></button>
-            <button *ngIf="((current$ | async) !== person.name)" mat-icon-button (click)=startTimer(i)><mat-icon>play_arrow</mat-icon></button>
-            <button *ngIf="(current$ | async) === person.name && (timer$ | async) && (pause$ | async)" mat-icon-button (click)=toggleTimer()><mat-icon>play_arrow</mat-icon></button>
-            <button *ngIf="(current$ | async) === person.name && (timer$ | async) && !(pause$ | async)" mat-icon-button (click)=toggleTimer()><mat-icon>pause</mat-icon></button>
-          </td>
-          <td *ngIf="(current$ | async) === person.name && (timer$ | async)">
-            <!--<button mat-button (click)=toggleTimer()><mat-icon>{{(pause$ | async) ? 'play_arrow' : 'pause'}}</mat-icon></button>-->
-            {{ timer$ | async | date:"mm:ss" }}
-          </td>
-          <td *ngIf="((current$ | async) === person.name) && (timer$ | async)">
-            <button mat-button (click)=restart()>Restart</button>
-          </td>
-          <td>
-            <button mat-icon-button (click)=deletePerson()><mat-icon>delete</mat-icon></button>
-          </td>
-        </tr>
-      </table>
+    <li [class.currentPerson]="(current$ | async) === person.name" *ngFor="let person of people; index as i">
+      <div class="name">{{person.name}}</div>
+      <div class="play-button">
+        <button *ngIf="(current$ | async) === person.name && !(timer$ | async)" mat-icon-button (click)=startTimer(i)><mat-icon>play_arrow</mat-icon></button>
+        <button *ngIf="((current$ | async) !== person.name)" mat-icon-button (click)=startTimer(i)><mat-icon>play_arrow</mat-icon></button>
+        <button *ngIf="(current$ | async) === person.name && (timer$ | async) && (pause$ | async)" mat-icon-button
+                (click)=toggleTimer()><mat-icon>play_arrow</mat-icon></button>
+        <button *ngIf="(current$ | async) === person.name && (timer$ | async) && !(pause$ | async)" mat-icon-button
+                (click)=toggleTimer()><mat-icon>pause</mat-icon></button>
+      </div>
+      <div class="timer" *ngIf="(current$ | async) === person.name && (timer$ | async)">{{ timer$ | async | date:"mm:ss" }}</div>
+      <div class="restart" *ngIf="((current$ | async) === person.name) && (timer$ | async)">
+            <button mat-button (click)=restart()>Restart</button></div>
+      <div class="delete"><button mat-icon-button (click)=deletePerson()><mat-icon>delete</mat-icon></button></div>
+    </li>
+    <li>
+      <button mat-icon-button (click)="addPerson()">
+        <mat-icon>add</mat-icon>
+      </button>
     </li>
   </ul>
-      <table><tr><td><button mat-icon-button (click)="addPerson()"><mat-icon>add</mat-icon></button></td></tr></table>
 </div>
 
+<!--
+<table>
+  <tr>
+    <td class="name-column"></td>
+    <td>
+    </td>
+    <td>
+      &lt;!&ndash;<button mat-button (click)=toggleTimer()><mat-icon>{{(pause$ | async) ? 'play_arrow' : 'pause'}}</mat-icon></button>&ndash;&gt;
+
+    </td>
+    <td *ngIf="((current$ | async) === person.name) && (timer$ | async)">
+      <button mat-button (click)=restart()>Restart</button>
+    </td>
+    <td>
+      <button mat-icon-button (click)=deletePerson()><mat-icon>delete</mat-icon></button>
+    </td>
+  </tr>
+</table>
+-->
 
