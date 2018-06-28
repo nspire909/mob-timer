@@ -193,9 +193,9 @@
   dependencies:
     tslib "^1.9.0"
 
-"@devrec/ng-timer@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@devrec/ng-timer/-/ng-timer-0.0.2.tgz#511b8c2d9e4cffa20c9a25f285803dbf72796ddf"
+"@devrec/ng-timer@0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@devrec/ng-timer/-/ng-timer-0.0.3.tgz#f77b4f1e8aefb137c3acda4800f0273b5d635b16"
   dependencies:
     tslib "^1.9.0"
 
@@ -5953,9 +5953,13 @@ tsickle@^0.29.0:
     source-map "^0.6.0"
     source-map-support "^0.5.0"
 
-tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@^1.7.1, tslib@^1.8.0, tslib@^1.8.1:
   version "1.9.2"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.2.tgz#8be0cc9a1f6dc7727c38deb16c2ebd1a2892988e"
+
+tslib@^1.9.0:
+  version "1.9.3"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.9.3.tgz#d7e4dd79245d85428c4d7e4822a79917954ca286"
 
 tslint@~5.9.1:
   version "5.9.1"
