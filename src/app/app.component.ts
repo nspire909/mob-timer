@@ -13,6 +13,7 @@ import {sound} from '../assets/sounds';
 })
 export class AppComponent implements OnInit {
   form: FormGroup;
+  editing = false;
 
   i = 0;
   people = [
@@ -24,7 +25,7 @@ export class AppComponent implements OnInit {
   timer$: Observable<number>;
   pause$: BehaviorSubject<boolean> = new BehaviorSubject(false);
   reset$: Subject<number> = new Subject();
-  current$: Observable<string>;
+  current$: Observable<number>;
 
   constructor(private fb: FormBuilder) { }
 
@@ -39,13 +40,14 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.editing);
     this.form = this.fb.group({
       minutes: [15, Validators.required]
     });
 
     this.current$ = this.reset$.pipe(
       startWith(0),
-      map(i => this.people[(i + 0) % this.people.length].name)
+      map(i => i)
     );
   }
 
@@ -54,6 +56,7 @@ export class AppComponent implements OnInit {
   }
 
   startTimer(i: number) {
+    this.editing = false;
     const interval$ = interval(1000).pipe(
       startWith(0),
       map(() => -1)
@@ -61,8 +64,6 @@ export class AppComponent implements OnInit {
 
     this.reset$.next(this.i = i);
     this.pause$.next(false);
-
-
 
     const seconds = 60 * +this.form.get('minutes').value;
 
@@ -80,6 +81,7 @@ export class AppComponent implements OnInit {
   }
 
   toggleTimer() {
+    this.editing = false;
     this.pause$.next(!this.pause$.value);
   }
 
@@ -104,5 +106,13 @@ export class AppComponent implements OnInit {
   addPerson() {
     const newPerson = window.prompt('Name');
     this.people.push({name: newPerson});
+  }
+
+  changeName(i: number) {
+    this.editing = true;
+  }
+
+  acceptName() {
+    this.editing = false;
   }
 }

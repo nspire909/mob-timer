@@ -1,16 +1,21 @@
 .page-content {
-  padding: 2rem;
+  padding: 1rem;
   width: 375px;
 }
 
 .head {
   display: grid;
-  width: 100%;
   grid-template-columns: repeat(2, 1fr);
   align-items: center;
-  .theme {
+  .minute-input {
+    width: 50px;
+  }
+  :last-child {
     text-align: right;
   }
+}
+ul.list-of-people {
+  padding-left: 0;
 }
 
 li {
@@ -19,15 +24,21 @@ li {
   align-items: center;
   padding-left: .25rem;
   margin-bottom: .25rem;
-  :last-child {
-    align-self: right
-  }
-  grid-template-columns: 110px 1fr 2fr 2fr 1fr;
-  grid-template-areas:
-    "name play-button timer restart delete";
+  grid-template-columns: 110px 1fr 1fr 2fr 1fr;
+  grid-template-areas: "name play-button timer restart delete";
 
   .name {
+    display: grid;
+    grid-template-columns: 100%;
+    align-items: center;
     grid-area: name;
+    //cursor: pointer;
+    ::ng-deep.mat-form-field-infix {
+      border-top-width: .2rem;
+    }
+    .name-field {
+      height: 40px;
+    }
   }
   .play-button {
     grid-area: play-button;
@@ -41,23 +52,7 @@ li {
   .delete {
     grid-area: delete;
   }
+  .clickable {
+    cursor: pointer;
+  }
 }
-
-ul.list-of-people {
-  width: 100%;
-  list-style: none;
-  padding-left: 0;
-}
-
-.form-control {
-  width: 50px;
-}
-
-input {
-  text-align: center;
-}
-
-.spacer {
-  flex: 1 1 auto;
-}
-

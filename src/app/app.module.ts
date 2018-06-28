@@ -53,6 +53,7 @@ import {
   MatTreeModule,
 } from '@angular/material';
 import {AppComponent} from './app.component';
+import {SelectOnFocusDirective} from './select-on-focus.directive';
 
 /**
  * NgModule that includes all Material modules that are required to serve the app.
@@ -108,8 +109,10 @@ import {AppComponent} from './app.component';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    SelectOnFocusDirective
   ],
-  imports: [BrowserAnimationsModule]
+  imports: [BrowserAnimationsModule],
+  declarations: [SelectOnFocusDirective]
 })
 export class MaterialModule {}
 
