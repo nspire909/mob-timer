@@ -1,27 +1,58 @@
 .page-content {
-  padding: 2rem;
+  padding: 1rem;
+  width: 375px;
+}
+
+.head {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  .minute-input {
+    width: 50px;
+  }
+  :last-child {
+    text-align: right;
+  }
+}
+ul.list-of-people {
+  padding-left: 0;
 }
 
 li {
+  display: grid;
+  width: 100%;
+  align-items: center;
+  padding-left: .25rem;
   margin-bottom: .25rem;
-}
-ul.list-of-people {
-  width: 450px;
-  list-style: none;
-  padding-left: 0;
+  grid-template-columns: 110px 1fr 1fr 2fr 1fr;
+  grid-template-areas: "name play-button timer restart delete";
 
-  .name-column {
-    width: 8rem;
-    height: 2.5rem;
+  .name {
+    display: grid;
+    grid-template-columns: 100%;
+    align-items: center;
+    grid-area: name;
+    //cursor: pointer;
+    ::ng-deep.mat-form-field-infix {
+      border-top-width: .2rem;
+    }
+    .name-field {
+      height: 40px;
+    }
+  }
+  .play-button {
+    grid-area: play-button;
+  }
+  .timer {
+    grid-area: timer;
+  }
+  .restart {
+    grid-area: restart;
+  }
+  .delete {
+    grid-area: delete;
+  }
+  .clickable {
+    cursor: pointer;
   }
 }
-.form-control {
-  width: 50px;
-}
-input {
-  text-align: center;
-}
-.spacer {
-  flex: 1 1 auto;
-}
-

@@ -1,43 +1,64 @@
 <mat-toolbar color="primary">
   <div>Mob Programming Timer</div>
-  <div class="spacer"></div>
-  <span>Dark Theme&nbsp;&nbsp;</span>
-  <mat-checkbox [(ngModel)]="isDarkTheme"></mat-checkbox>
 </mat-toolbar>
 <div class="page-content" [ngClass]="isDarkTheme ? 'dark-theme' : ''">
-  <form [formGroup]="form" class="form-group">
-    <mat-form-field class="form-control">
-      <label class="center-block">
-        <input matInput type="number" formControlName="minutes" size="1">
-      </label>
-    </mat-form-field>
-    Minutes
-  </form>
-  <div *ngIf="timer$ | async">
-    <button mat-button (click)=toggleTimer()>
-      <mat-icon>{{(pause$ | async) ? 'play_arrow' : 'pause'}}</mat-icon>
-    </button>
-    <button mat-button (click)=next()>
-      <mat-icon>skip_next</mat-icon>
-    </button>
-    <button mat-button (click)=reset()>
-      <mat-icon>replay</mat-icon>
-    </button>
-  </div>
-  <button mat-button *ngIf="!(timer$ | async)" (click)=startTimer()>
-    <mat-icon>play_arrow</mat-icon>
-  </button>
+  <section class="head">
+    <form [formGroup]="form" class="form-group">
+      <mat-form-field class="minute-input">
+        <label>
+          <input matInput type="number" formControlName="minutes" size="1">
+        </label>
+      </mat-form-field>
+      Minutes
+    </form>
+    <div>
+      <mat-slide-toggle [(ngModel)]="isDarkTheme"> Dark Theme</mat-slide-toggle>
+    </div>
+
+  </section>
   <ul class="list-of-people">
-    <li [class.currentPerson]="(current$ | async).name === person.name" *ngFor="let person of people">
-      <table>
-        <tr>
-          <td class="name-column">{{person.name}}</td>
-          <td *ngIf="(current$ | async).name === person.name">{{ timer$ | async | date:"mm:ss" }}</td>
-          <td *ngIf="((current$ | async).name === person.name) && (timer$ | async)">
-            <button mat-button (click)=restart()>Restart</button>
-          </td>
-        </tr>
-      </table>
+    <li [class.currentPerson]="(current$ | async) === i" *ngFor="let person of people; index as i">
+        <div class="name clickable">
+          <div (click)=changeName(i) *ngIf="!(((current$ | async) === i) && editing)">{{person.name}}</div>
+          <mat-form-field class="name-field" *ngIf="((current$ | async) === i) && editing">
+            <input matInput [(ngModel)]="person.name" mobSelectOnFocus autofocus (keyup.enter)="acceptName()">
+            <button mat-button *ngIf="editing" matSuffix mat-icon-button aria-label="Clear" (click)="acceptName(i)">
+              <mat-icon>check</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+      <div class="play-button">
+        <button *ngIf="(current$ | async) === i && !(timer$ | async)" mat-icon-button (click)=startTimer(i)>
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button *ngIf="((current$ | async) !== i)" mat-icon-button (click)=startTimer(i)>
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button *ngIf="(current$ | async) === i && (timer$ | async) && (pause$ | async)" mat-icon-button
+                (click)=toggleTimer()>
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <button *ngIf="(current$ | async) === i && (timer$ | async) && !(pause$ | async)" mat-icon-button
+                (click)=toggleTimer()>
+          <mat-icon>pause</mat-icon>
+        </button>
+      </div>
+      <div class="timer" *ngIf="(current$ | async) === i && (timer$ | async)">{{ timer$ | async | date:"mm:ss"
+        }}
+      </div>
+      <div class="restart" *ngIf="((current$ | async) === i) && (timer$ | async)">
+        <button mat-button (click)=restart()>Restart</button>
+      </div>
+      <div class="delete">
+        <button mat-icon-button (click)=deletePerson(i)>
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </li>
+    <li>
+      <button mat-icon-button (click)="addPerson()">
+        <mat-icon>add</mat-icon>
+      </button>
     </li>
   </ul>
   <!-- <mob-timer></mob-timer>

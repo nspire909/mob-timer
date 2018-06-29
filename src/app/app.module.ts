@@ -55,6 +55,7 @@ import {
 import { TimerModule } from '@devrec/ng-timer';
 import {AppComponent} from './app.component';
 import { TimerComponent } from './timer/timer.component';
+import {SelectOnFocusDirective} from './select-on-focus.directive';
 
 /**
  * NgModule that includes all Material modules that are required to serve the app.
@@ -110,11 +111,11 @@ import { TimerComponent } from './timer/timer.component';
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-
     TimerModule,
+    SelectOnFocusDirective
   ],
   imports: [BrowserAnimationsModule],
-  declarations: []
+  declarations: [SelectOnFocusDirective]
 })
 export class MaterialModule {}
 

@@ -16,23 +16,19 @@ export interface Person {
 })
 export class AppComponent implements OnInit {
   form: FormGroup;
+  editing = false;
 
   i = 0;
   people = [
-    {name: 'Jeremy'},
-    {name: 'Damian'},
-    {name: 'Brian'},
-    {name: 'Guy'},
-    {name: 'Nick'},
-    {name: 'James'},
-    {name: 'Harry'},
-    {name: 'Mike'}
+    {name: 'Amy'},
+    {name: 'Bill'},
+    {name: 'Charlene'},
   ];
 
   timer$: Observable<number>;
   pause$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  reset$: Subject<void> = new Subject();
-  current$: Subject<Person> = new BehaviorSubject(this.people[0]);
+  reset$: Subject<number> = new Subject();
+  current$: Observable<number>;
 
   // @ViewChild('mob-timer')
   // ngTimer$: Observable<number>;
@@ -40,20 +36,30 @@ export class AppComponent implements OnInit {
   constructor(private fb: FormBuilder, private audio: AudioService) { }
 
   ngOnInit() {
+    console.log(this.editing);
     this.form = this.fb.group({
       minutes: [15, Validators.required]
     });
+
+    this.current$ = this.reset$.pipe(
+      startWith(0),
+      map(i => i)
+    );
   }
 
   addField() {
     this.people.push({name: ''});
   }
 
-  startTimer() {
+  startTimer(i: number) {
+    this.editing = false;
     const interval$ = interval(1000).pipe(
       startWith(0),
       map(() => -1)
     );
+
+    this.reset$.next(this.i = i);
+    this.pause$.next(false);
 
     const seconds = 60 * +this.form.get('minutes').value;
 
@@ -85,42 +91,38 @@ export class AppComponent implements OnInit {
   }
 
   toggleTimer() {
+    this.editing = false;
     this.pause$.next(!this.pause$.value);
   }
 
   restart() {
-    this.reset$.next();
-    this.current$.next(this.people[this.i % this.people.length]);
-    this.startTimer();
+    this.reset$.next(this.i);
+    this.pause$.next(false);
+    this.timer$ = NEVER;
+    this.startTimer(this.i);
   }
 
   next() {
-    this.reset$.next();
-    this.current$.next(this.people[++this.i % this.people.length]);
-    this.startTimer();
+    this.reset$.next(++this.i);
+    this.pause$.next(false);
+    this.timer$ = NEVER;
+    this.startTimer(this.i);
   }
 
-  reset() {
-    this.i = 0;
-    this.reset$.next();
-    this.current$.next(this.people[this.i % this.people.length]);
-    this.stopTimer();
+  deletePerson(i: number) {
+    this.people.splice(i, 1);
   }
 
-  // whoIsNext() {
-  //   let next: string;
-  //   const rand = Math.floor(Math.random() * this.people.length);
-  //   next = this.people[rand];
-  //   this.people.splice(rand, 1);
-  //   return next;
-  // }
+  addPerson() {
+    const newPerson = window.prompt('Name');
+    this.people.push({name: newPerson});
+  }
 
-  // shuffleArray() {
-  //   let shuffledPeople: string[] = [];
-  //   do {
-  //     shuffledPeople.push(this.whoIsNext());
-  //   }
-  //   while (this.people.length > 0);
-  //   this.people = shuffledPeople;
-  // }
+  changeName(i: number) {
+    this.editing = true;
+  }
+
+  acceptName() {
+    this.editing = false;
+  }
 }
