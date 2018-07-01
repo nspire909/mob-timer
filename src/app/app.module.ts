@@ -54,7 +54,6 @@ import {
 } from '@angular/material';
 import { TimerModule } from '@devrec/ng-timer';
 import {AppComponent} from './app.component';
-import { TimerComponent } from './timer/timer.component';
 import {SelectOnFocusDirective} from './select-on-focus.directive';
 
 /**
@@ -128,7 +127,7 @@ export class MaterialModule {}
     ReactiveFormsModule,
     BrowserAnimationsModule
   ],
-  declarations: [AppComponent, TimerComponent],
+  declarations: [AppComponent],
   bootstrap: [AppComponent],
   providers: []
 })

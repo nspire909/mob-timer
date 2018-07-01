@@ -76,13 +76,6 @@ export class AppComponent implements OnInit {
         map(x => x * 1000),
         takeWhile(v => v >= 0)
       );
-
-    // this.ngTimer$.pipe(
-    //   tap(x => x === 31 || x === 30 || x === 29 ? this.audio.beep() : () => { }),
-    //   tap(x => x === 3 ? this.audio.gameOver() : () => { }),
-    //   tap(x => x === 0 ? this.next() : () => { }),
-    //   map(x => x * 1000)
-    // );
   }
 
   stopTimer() {
