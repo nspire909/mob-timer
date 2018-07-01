@@ -1,13 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { interval, merge, Observable, BehaviorSubject, Subject, NEVER, EMPTY } from 'rxjs';
-import { switchMap, scan, takeWhile, startWith, tap, map, takeUntil } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
+import { Observable, BehaviorSubject, Subject, NEVER, Subscription } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
+import { TimerService, Timer, Unit } from '@devrec/ng-timer';
+
 import { AudioService } from 'src/app/shared/audio.service';
 
 export interface Person {
   name: string;
 }
-
 
 @Component({
   selector: 'mob-app-component',
@@ -15,8 +15,11 @@ export interface Person {
   styleUrls: ['app.component.scss']
 })
 export class AppComponent implements OnInit {
-  form: FormGroup;
   editing = false;
+  name = 'myTimer';
+  timer: Timer;
+  isDarkTheme = true;
+  timerSubscription: Subscription;
 
   i = 0;
   people = [
@@ -25,26 +28,22 @@ export class AppComponent implements OnInit {
     {name: 'Charlene'},
   ];
 
-  timer$: Observable<number>;
-  pause$: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  reset$: Subject<number> = new Subject();
-  current$: Observable<number>;
+  current$: BehaviorSubject<number> = new BehaviorSubject(0);
 
-  // @ViewChild('mob-timer')
-  // ngTimer$: Observable<number>;
+  constructor(private audio: AudioService, private timerService: TimerService) {
+    this.timerService.newTimer(this.name, {
+      startTime: .1,
+      units: Unit.Minutes,
+      countdown: true,
+      autostart: false,
+      timeFormat: 'mm:ss'
+    });
 
-  constructor(private fb: FormBuilder, private audio: AudioService) { }
+    this.timer = this.timerService.timers[this.name];
+  }
 
   ngOnInit() {
     console.log(this.editing);
-    this.form = this.fb.group({
-      minutes: [15, Validators.required]
-    });
-
-    this.current$ = this.reset$.pipe(
-      startWith(0),
-      map(i => i)
-    );
   }
 
   addField() {
@@ -53,53 +52,27 @@ export class AppComponent implements OnInit {
 
   startTimer(i: number) {
     this.editing = false;
-    const interval$ = interval(1000).pipe(
-      startWith(0),
-      map(() => -1)
-    );
 
-    this.reset$.next(this.i = i);
-    this.pause$.next(false);
+    this.current$.next(i);
 
-    const seconds = 60 * +this.form.get('minutes').value;
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
 
-    this.pause$.next(false);
-
-    this.timer$ = merge(this.pause$)
-      .pipe(
-        switchMap(val => (!val ? interval$ : EMPTY)),
-        scan((acc, curr) => (curr ? curr + acc : acc), seconds),
-        takeUntil(this.reset$),
-        tap(x => x === 31 || x === 30 || x === 29 ? this.audio.beep() : () => { }),
-        tap(x => x === 2 ? this.audio.gameOver() : () => { }),
-        tap(x => x === 0 ? this.next() : () => { }),
-        map(x => x * 1000),
-        takeWhile(v => v >= 0)
-      );
-  }
-
-  stopTimer() {
-    this.timer$ = NEVER;
-    // this.ngTimer$ = NEVER;
-  }
-
-  toggleTimer() {
-    this.editing = false;
-    this.pause$.next(!this.pause$.value);
-  }
-
-  restart() {
-    this.reset$.next(this.i);
-    this.pause$.next(false);
-    this.timer$ = NEVER;
-    this.startTimer(this.i);
+    this.timerSubscription = this.timerService.start(this.name)
+      .subscribe(x => {
+        if (x === 31000 || x === 30000 || x === 29000) {
+          this.audio.beep();
+        } else if (x === 2000) {
+          this.audio.gameOver();
+        } else if (x === 0) {
+          this.next();
+        }
+      });
   }
 
   next() {
-    this.reset$.next(++this.i);
-    this.pause$.next(false);
-    this.timer$ = NEVER;
-    this.startTimer(this.i);
+    this.startTimer((this.current$.getValue() + 1) % this.people.length);
   }
 
   deletePerson(i: number) {
