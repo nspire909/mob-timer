@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
+import { TimerControlsComponent } from './timer-controls/timer-controls.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { SharedModule } from './shared/shared.module';
     ReactiveFormsModule,
     BrowserAnimationsModule
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, TimerControlsComponent],
   bootstrap: [AppComponent],
   providers: []
 })

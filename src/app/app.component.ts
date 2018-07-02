@@ -32,14 +32,19 @@ export class AppComponent implements OnInit {
   @ViewChild(TimerControlsComponent)
   timerControls: TimerControlsComponent;
 
-  i = 0;
-  people = [
-    {name: 'Amy'},
-    {name: 'Bill'},
-    {name: 'Charlene'},
+  // Todo: names must be unique
+  people: Person[] = [
+    {name: 'Brian'},
+    {name: 'Damian'},
+    {name: 'Guy'},
+    {name: 'Jeremy'},
+    {name: 'Harry'},
+    {name: 'James'},
+    {name: 'Mike'},
+    {name: 'Nick'}
   ];
 
-  current$: BehaviorSubject<number> = new BehaviorSubject(0);
+  current$: BehaviorSubject<Person> = new BehaviorSubject(this.people[0]);
 
   constructor(private audio: AudioService, private timerService: TimerService) {
     this.timer = this.timerService.newTimer(this.name, {
@@ -58,16 +63,25 @@ export class AppComponent implements OnInit {
     this.people.push({name: ''});
   }
 
-  next(i: number | null = null) {
+  next(person: Person | null = null) {
     this.editing = false;
-    this.current$.next(i === null ? (this.current$.getValue() + 1) % this.people.length : i);
 
-    this.timerControls.stopTimer();
+    this.current$.next(person === null ? this.nextPerson() : person);
+
     this.timerControls.startTimer();
   }
 
-  deletePerson(i: number) {
-    this.people.splice(i, 1);
+  private nextPerson(): Person {
+    const currentPerson = this.current$.getValue();
+    return this.people[(this.people.findIndex(x => x.name === currentPerson.name) + 1) % this.people.length];
+  }
+
+  deletePerson(person: Person) {
+    const index = this.people.findIndex(x => x.name === person.name);
+
+    if (index > -1) {
+      this.people.splice(index, 1);
+    }
   }
 
   addPerson() {
@@ -75,7 +89,7 @@ export class AppComponent implements OnInit {
     this.people.push({name: newPerson});
   }
 
-  changeName(i: number) {
+  changeName() {
     this.editing = true;
   }
 

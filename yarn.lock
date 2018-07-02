@@ -193,9 +193,9 @@
   dependencies:
     tslib "^1.9.0"
 
-"@devrec/ng-timer@0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@devrec/ng-timer/-/ng-timer-0.0.10.tgz#f63d848f43e9165c4df689440d087cacbc337c58"
+"@devrec/ng-timer@0.0.11":
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/@devrec/ng-timer/-/ng-timer-0.0.11.tgz#43d58c5468286cc7ad747fb4cc3dd9a8314ed82c"
   dependencies:
     tslib "^1.9.0"
 
