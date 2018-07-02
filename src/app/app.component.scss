@@ -24,8 +24,8 @@ li {
   align-items: center;
   padding-left: .25rem;
   margin-bottom: .25rem;
-  grid-template-columns: 110px 1fr 1fr 2fr 1fr;
-  grid-template-areas: "name play-button timer restart delete";
+  grid-template-columns: 110px 3fr 1fr 1fr;
+  grid-template-areas: "name controls timer delete";
 
   .name {
     display: grid;
@@ -40,14 +40,11 @@ li {
       height: 40px;
     }
   }
-  .play-button {
-    grid-area: play-button;
+  .controls {
+    grid-area: controls;
   }
   .timer {
     grid-area: timer;
-  }
-  .restart {
-    grid-area: restart;
   }
   .delete {
     grid-area: delete;

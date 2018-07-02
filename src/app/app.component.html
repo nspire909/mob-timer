@@ -10,37 +10,26 @@
   </section>
   <ul class="list-of-people">
     <li [class.currentPerson]="(current$ | async) === i" *ngFor="let person of people; index as i">
-        <div class="name clickable">
-          <div (click)=changeName(i) *ngIf="!(((current$ | async) === i) && editing)">{{person.name}}</div>
-          <mat-form-field class="name-field" *ngIf="((current$ | async) === i) && editing">
-            <input matInput [(ngModel)]="person.name" mobSelectOnFocus autofocus (keyup.enter)="acceptName()">
-            <button mat-button *ngIf="editing" matSuffix mat-icon-button aria-label="Clear" (click)="acceptName(i)">
-              <mat-icon>check</mat-icon>
-            </button>
-          </mat-form-field>
-        </div>
-      <div class="play-button">
-        <button *ngIf="(current$ | async) === i && !(timer.timer$ | async)" mat-icon-button (click)=startTimer(i)>
+      <div class="name clickable">
+        <div (click)=changeName(i) *ngIf="!(((current$ | async) === i) && editing)">{{person.name}}</div>
+        <mat-form-field class="name-field" *ngIf="((current$ | async) === i) && editing">
+          <input matInput [(ngModel)]="person.name" mobSelectOnFocus autofocus (keyup.enter)="acceptName()">
+          <button mat-button *ngIf="editing" matSuffix mat-icon-button aria-label="Clear" (click)="acceptName(i)">
+            <mat-icon>check</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div class="controls">
+        <button *ngIf="(current$ | async) !== i" mat-icon-button (click)="next(i)">
           <mat-icon>play_arrow</mat-icon>
         </button>
-        <button *ngIf="((current$ | async) !== i)" mat-icon-button (click)=startTimer(i)>
-          <mat-icon>play_arrow</mat-icon>
-        </button>
-        <button *ngIf="(current$ | async) === i && (timer.timer$ | async) && (timer.pause$ | async)" mat-icon-button
-                (click)=timerService.toggle(name)>
-          <mat-icon>play_arrow</mat-icon>
-        </button>
-        <button *ngIf="(current$ | async) === i && (timer.timer$ | async) && !(timer.pause$ | async)" mat-icon-button
-                (click)=timerService.toggle(name)>
-          <mat-icon>pause</mat-icon>
-        </button>
+        <div *ngIf="(current$ | async) === i">
+          <ng-timer-controls [name]="name" [timeFcn]="timeFcn"></ng-timer-controls>
+        </div> 
       </div>
       <ng-timer class="timer" *ngIf="(current$ | async) === i" [name]="name"></ng-timer>
-      <div class="restart" *ngIf="((current$ | async) === i) && (timer.timer$ | async)">
-        <button mat-button (click)=startTimer(i)>Restart</button>
-      </div>
       <div class="delete">
-        <button mat-icon-button (click)=deletePerson(i)>
+        <button mat-icon-button (click)="deletePerson(i)">
           <mat-icon>delete</mat-icon>
         </button>
       </div>

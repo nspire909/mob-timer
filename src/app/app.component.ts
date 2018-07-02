@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, BehaviorSubject, Subject, NEVER, Subscription } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
-import { TimerService, Timer, Unit } from '@devrec/ng-timer';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { TimerService, Timer, Unit, TimerControlsComponent } from '@devrec/ng-timer';
 
 import { AudioService } from 'src/app/shared/audio.service';
 
@@ -19,7 +18,19 @@ export class AppComponent implements OnInit {
   name = 'myTimer';
   timer: Timer;
   isDarkTheme = true;
-  timerSubscription: Subscription;
+
+  timeFcn = (x => {
+    if (x === 31000 || x === 30000 || x === 29000) {
+      this.audio.beep();
+    } else if (x === 2000) {
+      this.audio.gameOver();
+    } else if (x === 0) {
+      this.next();
+    }
+  });
+
+  @ViewChild(TimerControlsComponent)
+  timerControls: TimerControlsComponent;
 
   i = 0;
   people = [
@@ -31,15 +42,13 @@ export class AppComponent implements OnInit {
   current$: BehaviorSubject<number> = new BehaviorSubject(0);
 
   constructor(private audio: AudioService, private timerService: TimerService) {
-    this.timerService.newTimer(this.name, {
+    this.timer = this.timerService.newTimer(this.name, {
       startTime: .1,
       units: Unit.Minutes,
       countdown: true,
       autostart: false,
       timeFormat: 'mm:ss'
     });
-
-    this.timer = this.timerService.timers[this.name];
   }
 
   ngOnInit() {
@@ -50,29 +59,12 @@ export class AppComponent implements OnInit {
     this.people.push({name: ''});
   }
 
-  startTimer(i: number) {
+  next(i: number | null = null) {
     this.editing = false;
+    this.current$.next(i === null ? (this.current$.getValue() + 1) % this.people.length : i);
 
-    this.current$.next(i);
-
-    if (this.timerSubscription) {
-      this.timerSubscription.unsubscribe();
-    }
-
-    this.timerSubscription = this.timerService.start(this.name)
-      .subscribe(x => {
-        if (x === 31000 || x === 30000 || x === 29000) {
-          this.audio.beep();
-        } else if (x === 2000) {
-          this.audio.gameOver();
-        } else if (x === 0) {
-          this.next();
-        }
-      });
-  }
-
-  next() {
-    this.startTimer((this.current$.getValue() + 1) % this.people.length);
+    this.timerControls.stopTimer();
+    this.timerControls.startTimer();
   }
 
   deletePerson(i: number) {
