@@ -1,23 +1,21 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { TimerService, Timer, Unit, TimerControlsComponent } from '@devrec/ng-timer';
 
 import { AudioService } from 'src/app/shared/audio.service';
-
-export interface Person {
-  name: string;
-}
+import { Person } from 'src/app/shared/models';
 
 @Component({
   selector: 'mob-app-component',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   editing = false;
   name = 'myTimer';
   timer: Timer;
   isDarkTheme = true;
+  newName = '';
 
   timeFcn = (x => {
     if (x === 31000 || x === 30000 || x === 29000) {
@@ -56,13 +54,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
-
-  addField() {
-    this.people.push({name: ''});
-  }
-
   next(person: Person | null = null) {
     this.editing = false;
 
@@ -76,17 +67,13 @@ export class AppComponent implements OnInit {
     return this.people[(this.people.findIndex(x => x.name === currentPerson.name) + 1) % this.people.length];
   }
 
-  deletePerson(person: Person) {
-    const index = this.people.findIndex(x => x.name === person.name);
-
-    if (index > -1) {
-      this.people.splice(index, 1);
-    }
-  }
-
   addPerson() {
-    const newPerson = window.prompt('Name');
-    this.people.push({name: newPerson});
+    if (!this.people.find(x => x.name === this.newName) && this.newName) {
+      this.people.push({name: this.newName});
+      this.newName = '';
+    } else {
+      // Todo: name must be unique
+    }
   }
 
   changeName() {
@@ -95,5 +82,15 @@ export class AppComponent implements OnInit {
 
   acceptName() {
     this.editing = false;
+  }
+
+
+
+  deletePerson(person: Person) {
+    const index = this.people.findIndex(x => x.name === person.name);
+
+    if (index > -1) {
+      this.people.splice(index, 1);
+    }
   }
 }

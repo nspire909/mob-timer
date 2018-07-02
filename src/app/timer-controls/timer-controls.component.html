@@ -1,6 +1,0 @@
-<button *ngIf="(current$ | async).name !== person.name" mat-icon-button (click)="next(person)">
-  <mat-icon>play_arrow</mat-icon>
-</button>
-<div *ngIf="(current$ | async).name === person.name">
-  <ng-timer-controls [name]="name" [timeFcn]="timeFcn"></ng-timer-controls>
-</div> 

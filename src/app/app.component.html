@@ -35,9 +35,12 @@
       </div>
     </li>
     <li>
-      <button mat-icon-button (click)="addPerson()">
-        <mat-icon>add</mat-icon>
-      </button>
+      <mat-form-field>
+        <input matInput [(ngModel)]="newName" name="newName" autocomplete="off" placeholder="Name" (keyup.enter)="addPerson()">
+        <button matSuffix mat-icon-button (click)="addPerson()">
+          <mat-icon>add</mat-icon>
+        </button>
+      </mat-form-field>
     </li>
   </ul>
 </div>
