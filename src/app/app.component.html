@@ -42,5 +42,10 @@
         </button>
       </mat-form-field>
     </li>
+    <li>
+      <button mat-raised-button *ngIf="showLoadNames" (click)="loadNames()">
+        Load Names
+      </button>
+    </li>
   </ul>
 </div>

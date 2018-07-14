@@ -30,19 +30,11 @@ export class AppComponent {
   @ViewChild(TimerControlsComponent)
   timerControls: TimerControlsComponent;
 
-  // Todo: names must be unique
-  people: Person[] = [
-    {name: 'Brian'},
-    {name: 'Damian'},
-    {name: 'Guy'},
-    {name: 'Jeremy'},
-    {name: 'Harry'},
-    {name: 'James'},
-    {name: 'Mike'},
-    {name: 'Nick'}
-  ];
+  people: Person[] = [];
 
   current$: BehaviorSubject<Person> = new BehaviorSubject(this.people[0]);
+
+  showLoadNames = true;
 
   constructor(private audio: AudioService, private timerService: TimerService) {
     this.timer = this.timerService.newTimer(this.name, {
@@ -54,28 +46,47 @@ export class AppComponent {
     });
   }
 
-  next(person: Person | null = null) {
+  next(person?: Person) {
     this.editing = false;
 
-    this.current$.next(person === null ? this.nextPerson() : person);
-
-    this.timerControls.startTimer();
+    this.current$.next(!person ? this.nextPerson() : person);
+    if (person || !this.timer.pause$.getValue()) {
+      this.timerControls.startTimer();
+    }
   }
 
   private nextPerson(): Person {
     const currentPerson = this.current$.getValue();
-    return this.people[(this.people.findIndex(x => x.name === currentPerson.name) + 1) % this.people.length];
+    return currentPerson
+      ? this.people[(this.people.findIndex(x => x.name === currentPerson.name) + 1) % this.people.length]
+      : this.people[0];
   }
 
   addPerson() {
     if (!this.people.find(x => x.name === this.newName) && this.newName) {
       this.people.push({name: this.newName});
       this.newName = '';
+      if (this.people.length === 1) {
+        this.next();
+      }
     } else {
       // Todo: name must be unique
     }
   }
 
+  deletePerson(person: Person) {
+    const index = this.people.findIndex(x => x.name === person.name);
+
+    if (person.name === this.current$.getValue().name) {
+      this.next();
+    }
+
+    if (index > -1) {
+      this.people.splice(index, 1);
+    }
+  }
+
+  // Todo: edit all names, not just currentPerson, move trashcan icon to an x icon on the name field (maybe?)
   changeName() {
     this.editing = true;
   }
@@ -84,13 +95,18 @@ export class AppComponent {
     this.editing = false;
   }
 
-
-
-  deletePerson(person: Person) {
-    const index = this.people.findIndex(x => x.name === person.name);
-
-    if (index > -1) {
-      this.people.splice(index, 1);
-    }
+  loadNames() {
+    this.people = [
+      {name: 'Brian'},
+      {name: 'Damian'},
+      {name: 'Guy'},
+      {name: 'Jeremy'},
+      {name: 'Harry'},
+      {name: 'James'},
+      {name: 'Mike'},
+      {name: 'Nick'}
+    ];
+    this.next();
+    this.showLoadNames = false;
   }
 }
