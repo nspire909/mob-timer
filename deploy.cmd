@@ -103,7 +103,7 @@ call :ExecuteCmd !NPM_CMD! install @angular/cli -g
 echo Installing Yarn Packages.
 IF EXIST "%DEPLOYMENT_SOURCE%\package.json" (
   pushd "%DEPLOYMENT_SOURCE%"
-  call :ExecuteCmd yarn install --production
+  call :ExecuteCmd yarn
   IF !ERRORLEVEL! NEQ 0 goto error
   popd
 )
