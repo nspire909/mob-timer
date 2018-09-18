@@ -95,6 +95,10 @@ call :SelectNodeVersion
 echo Verifying Yarn Install.
 call :ExecuteCmd !NPM_CMD! install yarn -g
 
+:: 2. Install Angular Cli
+echo Verifying Angular Cli Install.
+call :ExecuteCmd !NPM_CMD! install @angular/cli -g
+
 :: 3. Install Yarn packages
 echo Installing Yarn Packages.
 IF EXIST "%DEPLOYMENT_SOURCE%\package.json" (
