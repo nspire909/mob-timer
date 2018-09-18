@@ -1,51 +1,55 @@
 <mat-toolbar color="primary">
   <div>Mob Programming Timer</div>
 </mat-toolbar>
-<div class="page-content" [ngClass]="isDarkTheme ? 'dark-theme' : ''">
-  <section class="head">
-    <ng-timer-input [name]="name"></ng-timer-input>
-    <div>
-      <mat-slide-toggle [(ngModel)]="isDarkTheme"> Dark Theme</mat-slide-toggle>
-    </div>
-  </section>
-  <ul class="list-of-people">
-    <li [class.currentPerson]="(current$ | async).name === person.name" *ngFor="let person of people">
-      <div class="name clickable">
-        <div (click)=changeName() *ngIf="!(((current$ | async).name === person.name) && editing)">{{person.name}}</div>
-        <mat-form-field class="name-field" *ngIf="((current$ | async).name === person.name) && editing">
-          <input matInput [(ngModel)]="person.name" mobSelectOnFocus autofocus (keyup.enter)="acceptName()">
-          <button mat-button *ngIf="editing" matSuffix mat-icon-button aria-label="Clear" (click)="acceptName()">
-            <mat-icon>check</mat-icon>
+<div class="container" [ngClass]="isDarkTheme ? 'dark-theme' : ''">
+  <div class="page-content">
+    <section class="head">
+      <ng-timer-input [name]="name"></ng-timer-input>
+      <div>
+        <mat-slide-toggle [(ngModel)]="isDarkTheme"> Dark Theme</mat-slide-toggle>
+      </div>
+    </section>
+    <ul class="list-of-people">
+      <li [class.currentPerson]="(current$ | async).name === person.name" *ngFor="let person of people">
+        <div class="name clickable">
+          <div (click)=changeName() *ngIf="!(((current$ | async).name === person.name) && editing)">{{person.name}}
+          </div>
+          <mat-form-field class="name-field" *ngIf="((current$ | async).name === person.name) && editing">
+            <input matInput [(ngModel)]="person.name" mobSelectOnFocus autofocus (keyup.enter)="acceptName()">
+            <button mat-button *ngIf="editing" matSuffix mat-icon-button aria-label="Clear" (click)="acceptName()">
+              <mat-icon>check</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="controls">
+          <button *ngIf="(current$ | async).name !== person.name" mat-icon-button (click)="next(person)">
+            <mat-icon>play_arrow</mat-icon>
+          </button>
+          <div *ngIf="(current$ | async).name === person.name">
+            <ng-timer-controls [name]="name" [timeFcn]="timeFcn"></ng-timer-controls>
+          </div>
+        </div>
+        <ng-timer class="timer" *ngIf="(current$ | async).name === person.name" [name]="name"></ng-timer>
+        <div class="delete">
+          <button mat-icon-button (click)="deletePerson(person)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </li>
+      <li>
+        <mat-form-field floatLabel="never">
+          <input matInput [(ngModel)]="newName" name="newName" autocomplete="off" placeholder="Name"
+                 (keyup.enter)="addPerson()">
+          <button matSuffix mat-icon-button (click)="addPerson()">
+            <mat-icon>add</mat-icon>
           </button>
         </mat-form-field>
-      </div>
-      <div class="controls">
-        <button *ngIf="(current$ | async).name !== person.name" mat-icon-button (click)="next(person)">
-          <mat-icon>play_arrow</mat-icon>
+      </li>
+      <li>
+        <button mat-raised-button *ngIf="showLoadNames" (click)="loadNames()">
+          Load Names
         </button>
-        <div *ngIf="(current$ | async).name === person.name">
-          <ng-timer-controls [name]="name" [timeFcn]="timeFcn"></ng-timer-controls>
-        </div> 
-      </div>
-      <ng-timer class="timer" *ngIf="(current$ | async).name === person.name" [name]="name"></ng-timer>
-      <div class="delete">
-        <button mat-icon-button (click)="deletePerson(person)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </div>
-    </li>
-    <li>
-      <mat-form-field>
-        <input matInput [(ngModel)]="newName" name="newName" autocomplete="off" placeholder="Name" (keyup.enter)="addPerson()">
-        <button matSuffix mat-icon-button (click)="addPerson()">
-          <mat-icon>add</mat-icon>
-        </button>
-      </mat-form-field>
-    </li>
-    <li>
-      <button mat-raised-button *ngIf="showLoadNames" (click)="loadNames()">
-        Load Names
-      </button>
-    </li>
-  </ul>
+      </li>
+    </ul>
+  </div>
 </div>

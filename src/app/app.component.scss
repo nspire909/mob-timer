@@ -1,15 +1,18 @@
+.container {
+  width: 100vw;
+  height: 100vh;
+}
 .page-content {
+  display: flex;
+  flex-direction: column;
   padding: 1rem;
-  width: 375px;
+  width: 40%;
 }
 
 .head {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 150px 1fr;
   align-items: center;
-  .minute-input {
-    width: 50px;
-  }
   :last-child {
     text-align: right;
   }
@@ -24,7 +27,7 @@ li {
   align-items: center;
   padding-left: .25rem;
   margin-bottom: .25rem;
-  grid-template-columns: 110px 3fr 1fr 1fr;
+  grid-template-columns: 150px 3fr 1fr 1fr;
   grid-template-areas: "name controls timer delete";
 
   .name {
