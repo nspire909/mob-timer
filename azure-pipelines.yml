@@ -17,3 +17,21 @@ steps:
     yarn
     yarn run build
   displayName: 'yarn install and build'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/TEST-RESULTS.xml'
+    testRunTitle: 'Test results for JavaScript'
+
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+    
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+    includeRootFolder: false
+
+- task: PublishBuildArtifacts@1
