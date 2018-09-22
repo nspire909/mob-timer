@@ -32,7 +32,7 @@ steps:
     
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist'
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist/mob-timer'
     includeRootFolder: false
 
 - task: PublishBuildArtifacts@1
