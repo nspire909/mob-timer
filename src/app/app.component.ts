@@ -1,9 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { TimerService, Timer, Unit, TimerControlsComponent } from '@devrec/ng-timer';
+import {Component, ViewChild} from '@angular/core';
+import {BehaviorSubject} from 'rxjs';
+import {TimerService, Timer, Unit, TimerControlsComponent} from '@devrec/ng-timer';
 
-import { AudioService } from 'src/app/shared/audio.service';
-import { Person } from 'src/app/shared/models';
+import {AudioService} from 'src/app/shared/audio.service';
+import {Person} from 'src/app/shared/models';
 
 @Component({
   selector: 'mob-app-component',
@@ -48,9 +48,11 @@ export class AppComponent {
 
   next(person?: Person) {
     this.editing = false;
-
+    if (this.timerControls) {
+      this.timerControls.stopTimer();
+    }
     this.current$.next(!person ? this.nextPerson() : person);
-    if ( (person || !this.timer.pause$.getValue() ) && this.editing) {
+    if ((person || !this.timer.pause$.getValue()) && this.editing) {
       this.editing = false;
       this.timerControls.startTimer();
     }
