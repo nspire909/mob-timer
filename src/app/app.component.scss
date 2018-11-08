@@ -1,24 +1,24 @@
-.container {
-  width: 100vw;
-  height: 100vh;
-}
 .page-content {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  width: 40%;
+  padding: 1rem 1.5rem 1rem 1rem;
+  //width: 40%;
 }
 
 .head {
   display: grid;
-  grid-template-columns: 150px 1fr;
+  grid-template-columns: 125px 1fr;
   align-items: center;
   :last-child {
-    text-align: right;
+    margin-left: 2rem;
+  }
+  ::ng-deep mat-form-field {
+    width: 125px !important;
   }
 }
 ul.list-of-people {
   padding-left: 0;
+  min-width: 330px;
 }
 
 li {
@@ -27,7 +27,7 @@ li {
   align-items: center;
   padding-left: .25rem;
   margin-bottom: .25rem;
-  grid-template-columns: 150px 3fr 1fr 1fr;
+  grid-template-columns: 125px 3fr 1fr 1fr;
   grid-template-areas: "name controls timer delete";
 
   .name {

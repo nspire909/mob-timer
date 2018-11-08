@@ -6,13 +6,13 @@
     <section class="head">
       <ng-timer-input [name]="name"></ng-timer-input>
       <div>
-        <mat-slide-toggle [(ngModel)]="isDarkTheme"> Dark Theme</mat-slide-toggle>
+        <mat-slide-toggle [(ngModel)]="isDarkTheme"> Dark </mat-slide-toggle>
       </div>
     </section>
     <ul class="list-of-people">
       <li [class.currentPerson]="(current$ | async).name === person.name" *ngFor="let person of people">
         <div class="name clickable">
-          <div (click)=changeName() *ngIf="!(((current$ | async).name === person.name) && editing)">{{person.name}}
+          <div (click)=changeName(person) *ngIf="!(((current$ | async).name === person.name) && editing)">{{person.name}}
           </div>
           <mat-form-field class="name-field" *ngIf="((current$ | async).name === person.name) && editing">
             <input matInput [(ngModel)]="person.name" mobSelectOnFocus autofocus (keyup.enter)="acceptName()">
@@ -26,7 +26,7 @@
             <mat-icon>play_arrow</mat-icon>
           </button>
           <div *ngIf="(current$ | async).name === person.name">
-            <ng-timer-controls [name]="name" [timeFcn]="timeFcn"></ng-timer-controls>
+            <ng-timer-controls [name]="name" [timeFcn]="timeFcn" (click)="acceptName()"></ng-timer-controls>
           </div>
         </div>
         <ng-timer class="timer" *ngIf="(current$ | async).name === person.name" [name]="name"></ng-timer>

@@ -38,7 +38,7 @@ export class AppComponent {
 
   constructor(private audio: AudioService, private timerService: TimerService) {
     this.timer = this.timerService.newTimer(this.name, {
-      startTime: .1,
+      startTime: 15,
       units: Unit.Minutes,
       countdown: true,
       autostart: false,
@@ -50,7 +50,8 @@ export class AppComponent {
     this.editing = false;
 
     this.current$.next(!person ? this.nextPerson() : person);
-    if (person || !this.timer.pause$.getValue()) {
+    if ( (person || !this.timer.pause$.getValue() ) && this.editing) {
+      this.editing = false;
       this.timerControls.startTimer();
     }
   }
@@ -87,7 +88,8 @@ export class AppComponent {
   }
 
   // Todo: edit all names, not just currentPerson, move trashcan icon to an x icon on the name field (maybe?)
-  changeName() {
+  changeName(person?: Person) {
+    this.next(person);
     this.editing = true;
   }
 
@@ -97,14 +99,13 @@ export class AppComponent {
 
   loadNames() {
     this.people = [
-      {name: 'Brian'},
-      {name: 'Damian'},
-      {name: 'Guy'},
-      {name: 'Jeremy'},
-      {name: 'Harry'},
+      {name: 'Nick'},
+      {name: 'Walter'},
       {name: 'James'},
-      {name: 'Mike'},
-      {name: 'Nick'}
+      {name: 'Dwight'},
+      {name: 'Michael'},
+      {name: 'Harry'},
+      {name: 'Jeff'},
     ];
     this.next();
     this.showLoadNames = false;
