@@ -38,7 +38,7 @@ export class AppComponent {
 
   constructor(private audio: AudioService, private timerService: TimerService) {
     this.timer = this.timerService.newTimer(this.name, {
-      startTime: .1,
+      startTime: 15,
       units: Unit.Minutes,
       countdown: true,
       autostart: false,
